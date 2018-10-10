@@ -1,5 +1,5 @@
 {
-    "family": "console-sample-app",
+    "family": "IMAGE_NAME",
     "volumes": [
         {
             "name": "my-vol",
