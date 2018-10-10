@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f13dd21-031f-437d-865c-2d28629db936" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/demo-targetgroup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployments/demo.json" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/demo.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo-targetgroup.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo-targetgroup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo-targetgroup.template" beforeDir="false" afterPath="$PROJECT_DIR$/demo-targetgroup.template" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +43,7 @@
           <entry key="Dockerfile" value="3" />
           <entry key="json" value="2" />
           <entry key="php" value="1" />
-          <entry key="py" value="3" />
+          <entry key="py" value="4" />
           <entry key="sh" value="2" />
           <entry key="yml" value="2" />
         </counts>
@@ -55,7 +54,7 @@
           <entry key="Dockerfile" value="3" />
           <entry key="JSON" value="2" />
           <entry key="PHP" value="1" />
-          <entry key="Python" value="3" />
+          <entry key="Python" value="4" />
           <entry key="YAML" value="2" />
         </counts>
       </usages-collector>
@@ -64,7 +63,7 @@
           <entry key="Dockerfile" value="11" />
           <entry key="dummy" value="20" />
           <entry key="json" value="58" />
-          <entry key="py" value="143" />
+          <entry key="py" value="194" />
           <entry key="sh" value="64" />
           <entry key="yml" value="1082" />
         </counts>
@@ -75,7 +74,7 @@
           <entry key="Dockerfile" value="11" />
           <entry key="JSON" value="58" />
           <entry key="PLAIN_TEXT" value="20" />
-          <entry key="Python" value="143" />
+          <entry key="Python" value="194" />
           <entry key="YAML" value="1082" />
         </counts>
       </usages-collector>
@@ -115,8 +114,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/deployments/demo.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="513">
-                  <caret line="65" column="30" lean-forward="true" selection-start-line="65" selection-start-column="30" selection-end-line="65" selection-end-column="30" />
+                <state relative-caret-position="95">
+                  <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="31" />
                 </state>
               </provider>
             </entry>
@@ -124,8 +123,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/demo-targetgroup.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="252">
-                  <caret line="151" column="72" selection-start-line="151" selection-start-column="72" selection-end-line="151" selection-end-column="72" />
+                <state relative-caret-position="267">
+                  <caret line="71" column="25" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
                   <folding>
                     <element signature="e#0#65#0" expanded="true" />
                   </folding>
@@ -155,6 +154,7 @@
       <find>alb</find>
       <find>ecr</find>
       <find>task_definition</find>
+      <find>container_name</find>
     </findStrings>
     <replaceStrings>
       <replace>SERVICE_NAME</replace>
@@ -282,13 +282,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deployments/demo.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="65" column="30" lean-forward="true" selection-start-line="65" selection-start-column="30" selection-end-line="65" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bitbucket-pipelines.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
@@ -298,15 +291,22 @@
     </entry>
     <entry file="file:///usr/local/lib/python3.7/site-packages/troposphere/ecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="108" column="23" selection-start-line="108" selection-start-column="23" selection-end-line="108" selection-end-column="23" />
+        <state relative-caret-position="256">
+          <caret line="91" column="6" selection-start-line="91" selection-start-column="6" selection-end-line="91" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deployments/demo.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/demo-targetgroup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="151" column="72" selection-start-line="151" selection-start-column="72" selection-end-line="151" selection-end-column="72" />
+        <state relative-caret-position="267">
+          <caret line="71" column="25" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
           <folding>
             <element signature="e#0#65#0" expanded="true" />
           </folding>

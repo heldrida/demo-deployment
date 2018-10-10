@@ -69,7 +69,8 @@ container_name = t.add_parameter(Parameter(
     "ContainerName",
     AllowedPattern="^.+$",
     Type="String",
-    Description="Container name",
+    Default="simple-app",
+    Description="Container name from the task-definition template",
 ))
 
 container_port = t.add_parameter(Parameter(
@@ -569,6 +570,7 @@ service = t.add_resource(ecs.Service(
     DesiredCount=Ref(autoscaling_min),
     LoadBalancers=[
         ecs.LoadBalancer(
+            ContainerName=Ref(container_name),
             ContainerPort=Ref(container_port),
             TargetGroupArn=Ref(target_group)
         ),

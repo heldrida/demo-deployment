@@ -71,7 +71,8 @@ Parameters:
     Type: String
   ContainerName:
     AllowedPattern: ^.+$
-    Description: Container name
+    Default: simple-app
+    Description: Container name from the task-definition template
     Type: String
   ContainerPort:
     Default: 80
@@ -136,8 +137,6 @@ Parameters:
       revision to roll back to. '
     Type: String
 Resources:
-  3b68fc771b2e4c1bae9913429c78e07b:
-    Type: AWS::CloudFormation::WaitConditionHandle
   AutoscaleRole:
     Properties:
       AssumeRolePolicyDocument:
@@ -349,7 +348,8 @@ Resources:
         MinimumHealthyPercent: '50'
       DesiredCount: !Ref 'AutoscalingMin'
       LoadBalancers:
-        - ContainerPort: !Ref 'ContainerPort'
+        - ContainerName: !Ref 'ContainerName'
+          ContainerPort: !Ref 'ContainerPort'
           TargetGroupArn: !Ref 'TargetGroup'
       PlacementStrategies:
         - Field: attribute:ecs.availability-zone
@@ -484,4 +484,6 @@ Resources:
             - - !Ref 'AWS::StackName'
               - task-policy
     Type: AWS::IAM::Role
+  c68539f0355d4aa7a6ac9083f382618e:
+    Type: AWS::CloudFormation::WaitConditionHandle
 
