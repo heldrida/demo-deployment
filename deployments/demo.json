@@ -18,7 +18,7 @@
 
             "environment": [],
             "name": "simple-app",
-            "image": "IMAGE_NAME",
+            "image": "DOCKER_IMAGE",
             "cpu": 10,
             "memory": 500,
             "portMappings": [

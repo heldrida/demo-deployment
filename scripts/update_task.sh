@@ -9,7 +9,7 @@ make_task_def(){
 	#sed -i "s/BITBUCKET_COMMIT/${BITBUCKET_COMMIT}/g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
 	sed -i "s/AWS_DEFAULT_REGION/${AWS_DEFAULT_REGION}/g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s/ENVIRONMENT/${ENVIRONMENT}/g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
-    sed -i "s|IMAGE_NAME|${IMAGE_NAME}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
+    sed -i "s|DOCKER_IMAGE|${DOCKER_IMAGE}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s|SUMO_URL|${SUMO_URL}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s|SUMO_CATEGORY|${SUMO_CATEGORY}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s|DOCKERTAG|${DOCKERTAG}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
