@@ -22,7 +22,7 @@ pipelines:
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - docker build . -t $IMAGE_NAME:${DOCKERTAG}-build
       - docker build . -t $IMAGE_NAME:${DOCKERTAG}
-      - docker save -o image.tar $IMAGE_NAME:$BITBUCKET_TAG
+      - docker save -o image.tar $IMAGE_NAME:${DOCKERTAG}
       artifacts:
       - image.tar
   - step:
