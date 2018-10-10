@@ -19,8 +19,8 @@ echo "Deploying from deployments/$TASK_NAME-$BITBUCKET_COMMIT.json"
 rev=$(aws ecs register-task-definition --cli-input-json file://deployments/$TASK_NAME-$BITBUCKET_COMMIT.json |  jq '.taskDefinition.revision')
 echo "New revision $TASK_NAME-$rev created"
 
-serv=$(aws ecs update-service --cluster ${ECS_CLUSTER}-${ENVIRONMENT} --service $TASK_NAME --force-new-deployment --task-definition $TASK_NAME:$rev | jq '.service.taskDefinition')
+serv=$(aws ecs update-service --cluster ${ECS_CLUSTER} --service $TASK_NAME --force-new-deployment --task-definition $TASK_NAME:$rev | jq '.service.taskDefinition')
 echo $serv
 
-aws ecs wait services-stable --cluster ${ECS_CLUSTER}-${ENVIRONMENT} --services $TASK_NAME
+aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services $TASK_NAME
 echo "Service is stable, deployment successful"

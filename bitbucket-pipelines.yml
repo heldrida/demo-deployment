@@ -4,7 +4,7 @@
 #  AWS_ACCOUNT_ID
 #  AWS_DEFAULT_REGION
 #  IMAGE_NAME
-#
+#  ECS_CLUSTER
 
 image: atlassian/default-image:2
 pipelines:
