@@ -23,8 +23,7 @@
             "memory": 128,
             "portMappings": [
                 {
-                    "containerPort": 80,
-                    "hostPort": 80
+                    "containerPort": 80
                 }
             ],
             "mountPoints": [
@@ -41,6 +40,13 @@
             "essential": true
         },
         {
+            "logConfiguration": {
+                "logDriver": "sumologic",
+                "options": {
+                    "sumo-url": "SUMO_URL",
+                    "sumo-source-category": "ENVIRONMENT/SUMO_CATEGORY"
+                }
+            },
             "name": "busybox",
             "image": "busybox",
             "cpu": 10,

@@ -1,0 +1,487 @@
+Conditions:
+  CertificateArnCondition: !Not
+    - !Equals
+      - !Ref 'CertificateArn'
+      - NONE
+  IsProd: !Equals
+    - !Ref 'StackEnv'
+    - PROD
+  ServiceHostCondition: !Not
+    - !Equals
+      - !Ref 'ServiceHost'
+      - NONE
+  ServicePathCondition: !Not
+    - !Equals
+      - !Ref 'ServicePath'
+      - NONE
+Description: ECS Service template
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: ECS Service
+        Parameters:
+          - HealthCheckPath
+          - AutoscalingMax
+          - AutoscalingMin
+      - Label:
+          default: ALB Listener Rule
+        Parameters:
+          - ServicePath
+          - ServiceHost
+          - ListenerPriority
+      - Label:
+          default: Container
+        Parameters:
+          - ContainerName
+          - ContainerPort
+      - Label:
+          default: Dependent stacks
+        Parameters:
+          - AlbStack
+          - EcsStack
+          - EncryptLambdaStack
+          - DatadogStack
+          - NetworkStack
+      - Label:
+          default: Parameters override (pipeline-ecs-service-api stack)
+        Parameters:
+          - CertificateArn
+          - StackEnv
+          - TaskDefinition
+Parameters:
+  AlbStack:
+    AllowedPattern: ^.+$
+    Default: NONE
+    Description: ALB stack name
+    Type: String
+  AutoscalingMax:
+    Default: 3
+    Description: Maximum number of tasks to autoscale
+    Type: Number
+  AutoscalingMin:
+    Default: 3
+    Description: Minimum number of tasks to autoscale
+    Type: Number
+  CertificateArn:
+    AllowedPattern: ^.+$
+    Default: NONE
+    Description: 'Optional: When certificate ARN is provided, rules are created on
+      ALB listener 443 (NONE for none)'
+    Type: String
+  ContainerName:
+    AllowedPattern: ^.+$
+    Description: Container name
+    Type: String
+  ContainerPort:
+    Default: 80
+    Description: Container port
+    Type: Number
+  DatadogStack:
+    Default: cfn-datadog
+    Description: Datadog stack name
+    Type: String
+  EcsStack:
+    AllowedPattern: ^.+$
+    Default: NONE
+    Description: ECS stack name
+    Type: String
+  EncryptLambdaStack:
+    AllowedPattern: ^.+$
+    Default: cfn-encrypt
+    Description: Encrypt Lambda stack name
+    Type: String
+  HealthCheckPath:
+    AllowedPattern: ^.+$
+    Default: NONE
+    Description: Healthcheck path
+    Type: String
+  ListenerPriority:
+    Default: 10
+    Description: Listener Rule Priority, must be unique across listeners
+    Type: Number
+  NetworkStack:
+    AllowedPattern: ^.+$
+    Default: NONE
+    Description: Network stack name
+    Type: String
+  ServiceHost:
+    AllowedPattern: ^.+$
+    Default: NONE
+    Description: 'Optional: Hostname for the ALB listener rule (use ServicePath OR
+      ServiceHost, NONE for none)'
+    Type: String
+  ServicePath:
+    AllowedPattern: ^.+$
+    Default: NONE
+    Description: 'Optional: Path portion of the service URL (use ServicePath OR ServiceHost,
+      NONE for none)'
+    Type: String
+  StackEnv:
+    AllowedPattern: ^.+$
+    AllowedValues:
+      - PROD
+      - UAT
+      - OTHER
+    Default: OTHER
+    Description: When PROD is selected Datadog will be installed on the instances.
+      Use UAT for UAT stacks and OTHER for everything else
+    Type: String
+  TaskDefinition:
+    Default: arn:aws:ecs:eu-west-1:145601632047:task-definition/demo:4
+    Description: 'The ARN of the task definition (including the revision number) that
+      you want to run on the cluster, such as arn:aws:ecs:us-east-1:123456789012:task-definition/mytask:3.
+      You can''t use :latest to specify a revision because it''s ambiguous. For example,
+      if AWS CloudFormation needed to roll back an update, it wouldn''t know which
+      revision to roll back to. '
+    Type: String
+Resources:
+  3b68fc771b2e4c1bae9913429c78e07b:
+    Type: AWS::CloudFormation::WaitConditionHandle
+  AutoscaleRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: application-autoscaling.amazonaws.com
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action:
+                  - ecs:DescribeServices
+                  - ecs:UpdateService
+                Effect: Allow
+                Resource:
+                  - '*'
+              - Action:
+                  - cloudwatch:DescribeAlarms
+                Effect: Allow
+                Resource:
+                  - '*'
+            Version: '2012-10-17'
+          PolicyName: !Join
+            - '-'
+            - - !Ref 'AWS::StackName'
+              - autoscale-policy
+    Type: AWS::IAM::Role
+  DatadogEcsServiceApiRunningServicesCountAlert:
+    Condition: IsProd
+    Properties:
+      ServiceToken: !ImportValue
+        Fn::Sub: ${DatadogStack}-LambdaArn
+      message: ECS Service API - Number of running services is below or equal to 0
+        @pagerduty-NHMediaDatadog
+      name: ECS Service API Running Services Count ( CFN )
+      options:
+        escalation_message: ''
+        evaluation_delay: '900'
+        include_tags: 'false'
+        locked: 'false'
+        new_host_delay: 300
+        no_data_timeframe: 10
+        notify_audit: 'false'
+        notify_no_data: 'true'
+        renotify_interval: '0'
+        thresholds:
+          critical: 0
+        timeout_h: 0
+      query: !Join
+        - ''
+        - - 'min(last_1h):avg:aws.ecs.service.running{service:'
+          - !GetAtt 'Service.Name'
+          - '} <= 0'
+    Type: Custom::DataDogMetricAlert
+  EcsServiceApiWebIngressRuleA:
+    Properties:
+      CidrIp: !Join
+        - /
+        - - !ImportValue
+            Fn::Sub: ${NetworkStack}-NatIpPublicA
+          - '32'
+      FromPort: 80
+      GroupId: !ImportValue
+        Fn::Sub: ${AlbStack}-SgAlbPublicGroupId
+      IpProtocol: '6'
+      ToPort: 80
+    Type: AWS::EC2::SecurityGroupIngress
+  EcsServiceApiWebIngressRuleB:
+    Properties:
+      CidrIp: !Join
+        - /
+        - - !ImportValue
+            Fn::Sub: ${NetworkStack}-NatIpPublicB
+          - '32'
+      FromPort: 80
+      GroupId: !ImportValue
+        Fn::Sub: ${AlbStack}-SgAlbPublicGroupId
+      IpProtocol: '6'
+      ToPort: 80
+    Type: AWS::EC2::SecurityGroupIngress
+  EcsServiceApiWebIngressRuleC:
+    Properties:
+      CidrIp: !Join
+        - /
+        - - !ImportValue
+            Fn::Sub: ${NetworkStack}-NatIpPublicC
+          - '32'
+      FromPort: 80
+      GroupId: !ImportValue
+        Fn::Sub: ${AlbStack}-SgAlbPublicGroupId
+      IpProtocol: '6'
+      ToPort: 80
+    Type: AWS::EC2::SecurityGroupIngress
+  EcsServiceApiWebIngressRuleSslA:
+    Condition: CertificateArnCondition
+    Properties:
+      CidrIp: !Join
+        - /
+        - - !ImportValue
+            Fn::Sub: ${NetworkStack}-NatIpPublicA
+          - '32'
+      FromPort: 443
+      GroupId: !ImportValue
+        Fn::Sub: ${AlbStack}-SgAlbPublicGroupId
+      IpProtocol: '6'
+      ToPort: 443
+    Type: AWS::EC2::SecurityGroupIngress
+  EcsServiceApiWebIngressRuleSslB:
+    Condition: CertificateArnCondition
+    Properties:
+      CidrIp: !Join
+        - /
+        - - !ImportValue
+            Fn::Sub: ${NetworkStack}-NatIpPublicB
+          - '32'
+      FromPort: 443
+      GroupId: !ImportValue
+        Fn::Sub: ${AlbStack}-SgAlbPublicGroupId
+      IpProtocol: '6'
+      ToPort: 443
+    Type: AWS::EC2::SecurityGroupIngress
+  EcsServiceApiWebIngressRuleSslC:
+    Condition: CertificateArnCondition
+    Properties:
+      CidrIp: !Join
+        - /
+        - - !ImportValue
+            Fn::Sub: ${NetworkStack}-NatIpPublicC
+          - '32'
+      FromPort: 443
+      GroupId: !ImportValue
+        Fn::Sub: ${AlbStack}-SgAlbPublicGroupId
+      IpProtocol: '6'
+      ToPort: 443
+    Type: AWS::EC2::SecurityGroupIngress
+  ListenerRule1:
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref 'TargetGroup'
+          Type: forward
+      Conditions:
+        - !If
+          - ServicePathCondition
+          - Field: path-pattern
+            Values:
+              - !Ref 'ServicePath'
+          - !Ref 'AWS::NoValue'
+        - !If
+          - ServiceHostCondition
+          - Field: host-header
+            Values:
+              - !If
+                - IsProd
+                - !Ref 'ServiceHost'
+                - !Join
+                  - .
+                  - - uat
+                    - !Ref 'ServiceHost'
+          - !Ref 'AWS::NoValue'
+      ListenerArn: !ImportValue
+        Fn::Sub: ${AlbStack}-AlbPublicListener80
+      Priority: !Ref 'ListenerPriority'
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  ListenerRule2:
+    Condition: CertificateArnCondition
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref 'TargetGroup'
+          Type: forward
+      Conditions:
+        - !If
+          - ServicePathCondition
+          - Field: path-pattern
+            Values:
+              - !Ref 'ServicePath'
+          - !Ref 'AWS::NoValue'
+        - !If
+          - ServiceHostCondition
+          - Field: host-header
+            Values:
+              - !If
+                - IsProd
+                - !Ref 'ServiceHost'
+                - !Join
+                  - .
+                  - - uat
+                    - !Ref 'ServiceHost'
+          - !Ref 'AWS::NoValue'
+      ListenerArn: !ImportValue
+        Fn::Sub: ${AlbStack}-AlbPublicListener443
+      Priority: !Ref 'ListenerPriority'
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  LogGroup:
+    Properties:
+      LogGroupName: !Ref 'AWS::StackName'
+      RetentionInDays: 60
+    Type: AWS::Logs::LogGroup
+  Service:
+    DependsOn: ServiceRole
+    Properties:
+      Cluster: !ImportValue
+        Fn::Sub: ${EcsStack}-Cluster
+      DeploymentConfiguration:
+        MaximumPercent: '200'
+        MinimumHealthyPercent: '50'
+      DesiredCount: !Ref 'AutoscalingMin'
+      LoadBalancers:
+        - ContainerPort: !Ref 'ContainerPort'
+          TargetGroupArn: !Ref 'TargetGroup'
+      PlacementStrategies:
+        - Field: attribute:ecs.availability-zone
+          Type: spread
+      Role: !Ref 'ServiceRole'
+      TaskDefinition: !Ref 'TaskDefinition'
+    Type: AWS::ECS::Service
+  ServiceRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs.amazonaws.com
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action:
+                  - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:Describe*
+                  - elasticloadbalancing:DeregisterInstancesFromLoadBalancer
+                  - elasticloadbalancing:DeregisterTargets
+                  - elasticloadbalancing:Describe*
+                  - elasticloadbalancing:RegisterInstancesWithLoadBalancer
+                  - elasticloadbalancing:RegisterTargets
+                Effect: Allow
+                Resource:
+                  - '*'
+              - Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:CreateLogGroup
+                Effect: Allow
+                Resource:
+                  - !Join
+                    - ':'
+                    - - arn:aws:logs
+                      - !Ref 'AWS::Region'
+                      - !Ref 'AWS::AccountId'
+                      - log-group
+                      - !Ref 'LogGroup'
+                      - '*'
+            Version: '2012-10-17'
+          PolicyName: !Join
+            - '-'
+            - - !Ref 'AWS::StackName'
+              - service-policy
+    Type: AWS::IAM::Role
+  TargetGroup:
+    Properties:
+      HealthCheckIntervalSeconds: '30'
+      HealthCheckPath: !Ref 'HealthCheckPath'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: '10'
+      HealthyThresholdCount: '4'
+      Matcher:
+        HttpCode: 200,302
+      Name: !Join
+        - '-'
+        - - !Ref 'StackEnv'
+          - Tg
+          - !Ref 'ContainerName'
+      Port: !Ref 'ContainerPort'
+      Protocol: HTTP
+      Tags:
+        - Key: TargetGroupName
+          Value: !Join
+            - '-'
+            - - Tg
+              - !Ref 'ContainerName'
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '30'
+      UnhealthyThresholdCount: '3'
+      VpcId: !ImportValue
+        Fn::Sub: ${NetworkStack}-Vpc
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  TaskRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:CreateLogGroup
+                Effect: Allow
+                Resource:
+                  - !Join
+                    - ':'
+                    - - arn:aws:logs
+                      - !Ref 'AWS::Region'
+                      - !Ref 'AWS::AccountId'
+                      - log-group
+                      - !Ref 'LogGroup'
+                      - '*'
+              - Action:
+                  - ssm:DescribeParameters
+                  - ssm:GetParameters
+                  - ssm:GetParametersByPath
+                  - ssm:GetParameter
+                Effect: Allow
+                Resource:
+                  - !Join
+                    - ':'
+                    - - arn:aws:ssm
+                      - !Ref 'AWS::Region'
+                      - !Ref 'AWS::AccountId'
+                      - '*'
+              - Action:
+                  - kms:Decrypt
+                Effect: Allow
+                Resource:
+                  - !ImportValue
+                    Fn::Sub: ${EncryptLambdaStack}-KmsKeyArn
+            Version: '2012-10-17'
+          PolicyName: !Join
+            - '-'
+            - - !Ref 'AWS::StackName'
+              - task-policy
+    Type: AWS::IAM::Role
+
