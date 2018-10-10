@@ -41,9 +41,8 @@ pipelines:
       - #export AWS_ACCESS_KEY_ID="$DEV_AWS_ACCESS_KEY_ID" && export AWS_SECRET_ACCESS_KEY="$DEV_AWS_SECRET_ACCESS_KEY"
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      - echo "Currently building $IMAGE_NAME"
-      - echo "Building tag $DOCKERTAG"
-      - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKER_TAG"
+      - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
+      - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
       - docker push $REPOSITORY
   - step:
@@ -61,7 +60,7 @@ pipelines:
       - pip install awscli
       - #export AWS_ACCESS_KEY_ID="$DEV_AWS_ACCESS_KEY_ID" && export AWS_SECRET_ACCESS_KEY="$DEV_AWS_SECRET_ACCESS_KEY"
       - export ENVIRONMENT="dev"
-      - export IMAGE_NAME="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKER_TAG"
+      - export IMAGE_NAME="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - chmod +x scripts/update_task.sh
       - TASK_NAME=$IMAGE_NAME scripts/update_task.sh
 options:
