@@ -1,5 +1,5 @@
 {
-    "family": "IMAGE_NAME",
+    "family": "TASK_NAME",
     "volumes": [
         {
             "name": "my-vol",
