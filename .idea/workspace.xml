@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3f13dd21-031f-437d-865c-2d28629db936" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/deployments/demo.json" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/demo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/update_task.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/update_task.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +56,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Dockerfile" value="11" />
-          <entry key="json" value="48" />
+          <entry key="json" value="55" />
           <entry key="sh" value="64" />
           <entry key="yml" value="1081" />
         </counts>
@@ -66,7 +65,7 @@
         <counts>
           <entry key="Bash" value="64" />
           <entry key="Dockerfile" value="11" />
-          <entry key="JSON" value="48" />
+          <entry key="JSON" value="55" />
           <entry key="YAML" value="1081" />
         </counts>
       </usages-collector>
@@ -94,20 +93,20 @@
       </split-first>
       <split-second>
         <leaf>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/scripts/update_task.sh">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="210">
-                  <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+                <state relative-caret-position="375">
+                  <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/deployments/demo.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="6">
-                  <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+                <state relative-caret-position="114">
+                  <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
                 </state>
               </provider>
             </entry>
@@ -140,8 +139,8 @@
       <list>
         <option value="$PROJECT_DIR$/Dockerfile" />
         <option value="$PROJECT_DIR$/bitbucket-pipelines.yml" />
-        <option value="$PROJECT_DIR$/deployments/demo.json" />
         <option value="$PROJECT_DIR$/scripts/update_task.sh" />
+        <option value="$PROJECT_DIR$/deployments/demo.json" />
       </list>
     </option>
   </component>
@@ -251,17 +250,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deployments/demo.json">
+    <entry file="file://$PROJECT_DIR$/scripts/update_task.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6">
-          <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+        <state relative-caret-position="375">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/update_task.sh">
+    <entry file="file://$PROJECT_DIR$/deployments/demo.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+        <state relative-caret-position="114">
+          <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
         </state>
       </provider>
     </entry>
