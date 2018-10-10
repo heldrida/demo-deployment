@@ -12,7 +12,7 @@ make_task_def(){
     sed -i "s|DOCKER_IMAGE|${DOCKER_IMAGE}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s|SUMO_URL|${SUMO_URL}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s|SUMO_CATEGORY|${SUMO_CATEGORY}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
-    sed -i "s|DOCKERTAG|${DOCKERTAG}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
+    #sed -i "s|DOCKERTAG|${DOCKERTAG}|g" deployments/$TASK_NAME-$BITBUCKET_COMMIT.json
 }
 make_task_def
 echo "Deploying from deployments/$TASK_NAME-$BITBUCKET_COMMIT.json"

@@ -8,6 +8,9 @@
 #
 # For multiple environments in the same pipeline, create multiple variables and
 # add "ENV_" in front of the variable such as: DEV_AWS_ACCESS_KEY_ID
+#
+# Copy the task-definition from ./deployments/demo.json to
+# ./deployments/$IMAGE_NAME.json and change the it to fit your purposes.
 
 image: atlassian/default-image:2
 pipelines:
