@@ -68,13 +68,13 @@
           <entry key="dummy" value="20" />
           <entry key="json" value="58" />
           <entry key="py" value="194" />
-          <entry key="sh" value="1220" />
+          <entry key="sh" value="1228" />
           <entry key="yml" value="1082" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Bash" value="1220" />
+          <entry key="Bash" value="1228" />
           <entry key="Dockerfile" value="11" />
           <entry key="JSON" value="58" />
           <entry key="PLAIN_TEXT" value="20" />
@@ -91,8 +91,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/scripts/update_task.sh">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="58" column="28" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
+                <state relative-caret-position="465">
+                  <caret line="65" column="20" lean-forward="true" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
                 </state>
               </provider>
             </entry>
@@ -297,8 +297,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/update_task.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="58" column="28" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
+        <state relative-caret-position="465">
+          <caret line="65" column="20" lean-forward="true" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
         </state>
       </provider>
     </entry>

@@ -58,10 +58,10 @@ aws cloudformation deploy --template-file demo-targetgroup.template \
   ListenerPriority=10 \
   ContainerName="simple-app" \
   ContainerPort=80 \
-  EcsStack=dev-cluster \
-  EncryptLambdaStack=cfn-encrypt \
-  DatadogStack=cfn-datadog \
-  NetworkStack=aws-gotamedia-dev-vpc \
+  EcsStack="dev-cluster" \
+  EncryptLambdaStack="cfn-encrypt" \
+  DatadogStack="cfn-datadog" \
+  NetworkStack="aws-gotamedia-dev-vpc" \
   CertificateArn="NONE" \
   StackEnv="OTHER" \
   TaskDefinition=$taskDefinitionArn
