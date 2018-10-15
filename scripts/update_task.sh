@@ -43,7 +43,7 @@ echo "New revision $TASK_NAME-$rev created"
 
 echo "Deploying service with Cloudformation"
 # Get the ARN of the taskdefinition
-taskDefinitionArn=$(aws ecs describe-task-definition --task-definition $TASK_NAME:$rev | jq '.taskDefinition.taskDefinitionArn')
+taskDefinitionArn=$(aws ecs describe-task-definition --task-definition $TASK_NAME:$rev | jq -r '.taskDefinition.taskDefinitionArn')
 echo $taskDefinitionArn
 
 # Deploy with cloudformation
@@ -55,7 +55,7 @@ aws cloudformation deploy --capabilities CAPABILITY_IAM \
   AutoscalingMax=3 \
   AutoscalingMin=3 \
   ServicePath="/" \
-  ServiceHost="NONE" \
+  ServiceHost="" \
   ListenerPriority=10 \
   ContainerName="simple-app" \
   ContainerPort=80 \
