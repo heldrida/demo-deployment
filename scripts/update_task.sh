@@ -49,7 +49,7 @@ echo $taskDefinitionArn
 # Deploy with cloudformation
 aws cloudformation deploy --capabilities CAPABILITY_IAM \
  --template-file demo-targetgroup.template \
- --stack-name $TASK_NAME \
+ --stack-name demo-tg \
  --parameter-overrides \
   HealthCheckPath="/" \
   AutoscalingMax=3 \
