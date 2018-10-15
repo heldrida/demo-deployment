@@ -58,6 +58,7 @@ aws cloudformation deploy --capabilities CAPABILITY_IAM \
   ListenerPriority=10 \
   ContainerName="simple-app" \
   ContainerPort=80 \
+  AlbStack="dev-alb" \
   EcsStack="dev-cluster" \
   EncryptLambdaStack="cfn-encrypt" \
   DatadogStack="cfn-datadog" \
