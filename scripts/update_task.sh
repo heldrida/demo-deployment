@@ -55,7 +55,6 @@ aws cloudformation deploy --capabilities CAPABILITY_IAM \
   AutoscalingMax=3 \
   AutoscalingMin=3 \
   ServicePath="/" \
-  #ServiceHost="" \
   ListenerPriority=10 \
   ContainerName="simple-app" \
   ContainerPort=80 \
@@ -65,7 +64,8 @@ aws cloudformation deploy --capabilities CAPABILITY_IAM \
   NetworkStack="aws-gotamedia-dev-vpc" \
   CertificateArn="NONE" \
   StackEnv="OTHER" \
-  TaskDefinition=$taskDefinitionArn
+  TaskDefinition=$taskDefinitionArn \
+  #ServiceHost=""
 
 aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services $TASK_NAME
 echo "Service is stable, deployment successful"
