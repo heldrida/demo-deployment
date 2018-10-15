@@ -47,7 +47,8 @@ taskDefinitionArn=$(aws ecs describe-task-definition --task-definition $TASK_NAM
 echo $taskDefinitionArn
 
 # Deploy with cloudformation
-aws cloudformation deploy --template-file demo-targetgroup.template \
+aws cloudformation deploy --capabilities CAPABILITY_IAM \
+ --template-file demo-targetgroup.template \
  --stack-name $TASK_NAME \
  --parameter-overrides \
   HealthCheckPath="/" \
