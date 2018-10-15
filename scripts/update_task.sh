@@ -46,23 +46,25 @@ echo "Deploying service with Cloudformation"
 taskDefinitionArn=$(aws ecs describe-task-definition --task-definition $TASK_NAME:$rev | jq '.taskDefinition.taskDefinitionArn')
 echo $taskDefinitionArn
 
-#aws cloudformation deploy --template-file demo-targetgroup.template \
-# --stack-name $TASK_NAME \
-# --parameter-overrides \
-#  HealthCheckPath=Value1 \
-#  AutoscalingMax=Value2 \
-#  AutoscalingMin=Value2 \
-#  ServicePath=Value2 \
-#  ListenerPriority=Value2 \
-#  ContainerName=VALUE \
-#  ContainerPort=80 \
-#  EcsStack=dev-cluster \
-#  EncryptLambdaStack=cfn-encrypt \
-#  DatadogStack=cfn-datadog \
-#  NetworkStack=aws-gotamedia-dev-vpc \
-#  CertificateArn="" \
-#  StackEnv=OTHER \
-#  TaskDefinition=$taskDefinitionArn
+# Deploy with cloudformation
+aws cloudformation deploy --template-file demo-targetgroup.template \
+ --stack-name $TASK_NAME \
+ --parameter-overrides \
+  HealthCheckPath="/" \
+  AutoscalingMax=3 \
+  AutoscalingMin=3 \
+  ServicePath="/" \
+  ServiceHost="NONE" \
+  ListenerPriority=10 \
+  ContainerName="simple-app" \
+  ContainerPort=80 \
+  EcsStack=dev-cluster \
+  EncryptLambdaStack=cfn-encrypt \
+  DatadogStack=cfn-datadog \
+  NetworkStack=aws-gotamedia-dev-vpc \
+  CertificateArn="NONE" \
+  StackEnv="OTHER" \
+  TaskDefinition=$taskDefinitionArn
 
 aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services $TASK_NAME
 echo "Service is stable, deployment successful"
