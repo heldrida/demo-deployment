@@ -41,7 +41,6 @@ echo "Deploying service with Cloudformation"
 # Get the ARN of the taskdefinition
 taskDefinitionArn=$(aws ecs describe-task-definition --task-definition $TASK_NAME:$rev | jq -r '.taskDefinition.taskDefinitionArn')
 echo $taskDefinitionArn
-curlUrl=$(aws
 
 # Deploy with cloudformation
 aws cloudformation deploy --capabilities CAPABILITY_IAM \

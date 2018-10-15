@@ -12,7 +12,14 @@
 # Copy the task-definition from ./deployments/demo.json to
 # ./deployments/$IMAGE_NAME.json and change the it to fit your purposes.
 
-image: atlassian/default-image:2
+#image: atlassian/default-image:2
+
+
+image:
+  name: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/bitbucketbuild:latest
+  aws:
+    access-key: $AWS_ACCESS_KEY_ID
+    secret-key: $AWS_SECRET_ACCESS_KEY
 pipelines:
   default:
   - step:
@@ -36,11 +43,11 @@ pipelines:
       - docker
       script:
       - docker load -i image.tar
-      - apt-get update && apt-get install -y python-dev jq
-      - |
-        curl -O https://bootstrap.pypa.io/get-pip.py
-        python get-pip.py
-      - pip install awscli
+#      - apt-get update && apt-get install -y python-dev jq
+#      - |
+#        curl -O https://bootstrap.pypa.io/get-pip.py
+#        python get-pip.py
+#      - pip install awscli
       - #export AWS_ACCESS_KEY_ID="$DEV_AWS_ACCESS_KEY_ID" && export AWS_SECRET_ACCESS_KEY="$DEV_AWS_SECRET_ACCESS_KEY"
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
@@ -56,11 +63,11 @@ pipelines:
       caches:
       - docker
       script:
-      - apt-get update && apt-get install -y python-dev jq
-      - |
-        curl -O https://bootstrap.pypa.io/get-pip.py
-        python get-pip.py
-      - pip install awscli
+#      - apt-get update && apt-get install -y python-dev jq
+#      - |
+#        curl -O https://bootstrap.pypa.io/get-pip.py
+#        python get-pip.py
+#      - pip install awscli
       - #export AWS_ACCESS_KEY_ID="$DEV_AWS_ACCESS_KEY_ID" && export AWS_SECRET_ACCESS_KEY="$DEV_AWS_SECRET_ACCESS_KEY"
       - export ENVIRONMENT="dev"
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
