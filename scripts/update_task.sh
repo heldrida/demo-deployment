@@ -55,7 +55,7 @@ aws cloudformation deploy --capabilities CAPABILITY_IAM \
   AutoscalingMax=3 \
   AutoscalingMin=3 \
   ServicePath="/" \
-  ServiceHost="" \
+  #ServiceHost="" \
   ListenerPriority=10 \
   ContainerName="simple-app" \
   ContainerPort=80 \
