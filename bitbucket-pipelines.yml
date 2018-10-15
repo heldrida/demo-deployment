@@ -16,7 +16,7 @@
 
 
 image:
-  name: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/bitbucketbuild:latest
+  name: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/bitbucketbuild
   aws:
     access-key: $AWS_ACCESS_KEY_ID
     secret-key: $AWS_SECRET_ACCESS_KEY
