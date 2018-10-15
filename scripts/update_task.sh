@@ -19,10 +19,6 @@ echo "Deploying from deployments/$TASK_NAME-$BITBUCKET_COMMIT.json"
 rev=$(aws ecs register-task-definition --cli-input-json file://deployments/$TASK_NAME-$BITBUCKET_COMMIT.json |  jq '.taskDefinition.revision')
 echo "New revision $TASK_NAME-$rev created"
 
-# Update the service with a new deployment of a task-definition
-#serv=$(aws ecs update-service --cluster ${ECS_CLUSTER} --service $TASK_NAME --force-new-deployment --task-definition $TASK_NAME:$rev | jq '.service.taskDefinition')
-#echo $serv
-
 # Deploy or update a cloudformation template with the new task-definition and force a new deployment of the service
 # Parameters
 #  HealthCheckPath
@@ -45,6 +41,7 @@ echo "Deploying service with Cloudformation"
 # Get the ARN of the taskdefinition
 taskDefinitionArn=$(aws ecs describe-task-definition --task-definition $TASK_NAME:$rev | jq -r '.taskDefinition.taskDefinitionArn')
 echo $taskDefinitionArn
+curlUrl=$(aws
 
 # Deploy with cloudformation
 aws cloudformation deploy --capabilities CAPABILITY_IAM \
@@ -66,7 +63,12 @@ aws cloudformation deploy --capabilities CAPABILITY_IAM \
   CertificateArn="NONE" \
   StackEnv="OTHER" \
   TaskDefinition=$taskDefinitionArn \
-  #ServiceHost=""
+  #ServiceHost="ONLY NEEDED IF YOU'RE NOT USING ServicePath"
 
-aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services $TASK_NAME
-echo "Service is stable, deployment successful"
+# Use the AWS cli to create a new deployment and update it
+# Update the service with a new deployment of a task-definition
+#serv=$(aws ecs update-service --cluster ${ECS_CLUSTER} --service $TASK_NAME --force-new-deployment --task-definition $TASK_NAME:$rev | jq '.service.taskDefinition')
+#echo $serv
+
+#aws ecs wait services-stable --cluster ${ECS_CLUSTER} --services $TASK_NAME
+#echo "Service is stable, deployment successful"
