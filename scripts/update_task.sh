@@ -44,6 +44,7 @@ echo "New revision $TASK_NAME-$rev created"
 echo "Deploying service with Cloudformation"
 # Get the ARN of the taskdefinition
 taskDefinitionArn=$(aws ecs describe-task-definition --task-definition $TASK_NAME:$rev | jq '.taskDefinition.taskDefinitionArn')
+echo $taskDefinitionArn
 
 #aws cloudformation deploy --template-file demo-targetgroup.template \
 # --stack-name $TASK_NAME \
