@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f13dd21-031f-437d-865c-2d28629db936" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bitbucket-pipelines.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bitbucket-pipelines.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,11 +34,12 @@
     <session id="-987304711">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -69,7 +71,7 @@
           <entry key="json" value="58" />
           <entry key="py" value="194" />
           <entry key="sh" value="1515" />
-          <entry key="yml" value="1137" />
+          <entry key="yml" value="1156" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -79,18 +81,18 @@
           <entry key="JSON" value="58" />
           <entry key="PLAIN_TEXT" value="20" />
           <entry key="Python" value="194" />
-          <entry key="YAML" value="1137" />
+          <entry key="YAML" value="1156" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bitbucket-pipelines.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
+            <state relative-caret-position="225">
+              <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -98,8 +100,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo-targetgroup.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="762">
-              <caret line="742" column="27" lean-forward="true" selection-start-line="742" selection-end-line="743" />
+            <state relative-caret-position="10995">
+              <caret line="742" column="27" selection-start-line="742" selection-end-line="743" />
             </state>
           </provider>
         </entry>
@@ -150,11 +152,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="33" />
-    <option name="y" value="35" />
-    <option name="width" value="1887" />
-    <option name="height" value="877" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1939" />
+    <option name="y" value="774" />
+    <option name="width" value="1243" />
+    <option name="height" value="1335" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -216,10 +218,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="1020" extended-state="6" />
+    <frame x="1939" y="774" width="1243" height="1335" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09373354" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12274959" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -232,7 +234,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5002633" side_tool="true" weight="0.3275862" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4997367" visible="true" weight="0.3275862" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4997367" weight="1.0" />
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -273,13 +275,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/demo-targetgroup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="762">
-          <caret line="742" column="27" lean-forward="true" selection-start-line="742" selection-end-line="743" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/demo-targetgroup.template">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -292,8 +287,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bitbucket-pipelines.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
+        <state relative-caret-position="225">
+          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo-targetgroup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10995">
+          <caret line="742" column="27" selection-start-line="742" selection-end-line="743" />
         </state>
       </provider>
     </entry>

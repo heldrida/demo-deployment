@@ -13,7 +13,7 @@
 # ./deployments/$IMAGE_NAME.json and change the it to fit your purposes.
 
 #image: atlassian/default-image:2
-
+# testing new image
 
 image:
   name: 145601632047.dkr.ecr.eu-west-1.amazonaws.com/bitbucketbuild
