@@ -4,75 +4,129 @@
 #  AWS_ACCOUNT_ID
 #  AWS_DEFAULT_REGION
 #  IMAGE_NAME
-#  ECS_CLUSTER
+#  HEALTHCHECKPATH
+#  AUTOSCALINGMAX
+#  AUTOSCALINGMIN
+#  SERVICEPATH
+#  SERVICEHOST
+#  CONTAINERPORT
+#  CERTIFICATEARN  # Set to "NONE" if not needed. Only if you use HTTPS in the ALBSTACK #
+#  STACKENV  # PROD, UAT, OTHER #
+#  SUMO_URL
 #
 # For multiple environments in the same pipeline, create multiple variables and
-# add "ENV_" in front of the variable such as: DEV_AWS_ACCESS_KEY_ID
+# add "ENV_" in front of the variable such as: TEST_AWS_ACCESS_KEY_ID
 #
-# Copy the task-definition from ./deployments/demo.json to
-# ./deployments/$IMAGE_NAME.json and change the it to fit your purposes.
-
-image: atlassian/default-image:2
-# testing new image
-
+# Copy the task-definition from ./ci/task-definitions/demo.json to
+# ./ci/task/definitions/$IMAGE_NAME.json and change the it to fit your purposes.
+#
 #image:
 #  name: 145601632047.dkr.ecr.eu-west-1.amazonaws.com/bitbucketbuild
 #  aws:
 #    access-key: $AWS_ACCESS_KEY_ID
 #    secret-key: $AWS_SECRET_ACCESS_KEY
+#
+# For more release strategies (tags, branches) and other workflows (parallel):
+# https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
+
+image: atlassian/default-image:2
 pipelines:
   default:
   - step:
-      name: Build image and test
-      services:
-      - docker
-      caches:
-      - docker
+      name: Default
       script:
-      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      - docker build . -t $IMAGE_NAME:${DOCKERTAG}-build
-      - docker build . -t $IMAGE_NAME:${DOCKERTAG}
-      - docker save -o image.tar $IMAGE_NAME:${DOCKERTAG}
-      artifacts:
-      - image.tar
+      - echo "Default step"
   - step:
-      name: Push to ECR
+      name: Push to dev
+      deployment: test
       services:
       - docker
       caches:
       - docker
       script:
-      - docker load -i image.tar
-      - apt-get update && apt-get install -y python-dev jq
+      - export ENVIRONMENT="dev"
+      - #export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
+      - apt-get update && apt-get install -y python-dev jq bsdmainutils
       - |
         curl -O https://bootstrap.pypa.io/get-pip.py
         python get-pip.py
       - pip install awscli
-      - #export AWS_ACCESS_KEY_ID="$DEV_AWS_ACCESS_KEY_ID" && export AWS_SECRET_ACCESS_KEY="$DEV_AWS_SECRET_ACCESS_KEY"
+      - chmod +x ci/scripts/*
+      - # Check if any templates need to be deployed
+      - ci/scripts/deploy_templates.sh
+      - # Build, tag and push the docker image
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      - docker build -t $IMAGE_NAME:${DOCKERTAG} --build-arg ENV_DBURI=${IMAGE_NAME}_${ENVIRONMENT}_rds_DatabaseURI} --build-arg ENV_DBUSER=${DBUSER} --build-arg ENV_DBPASS=${DBPASSWORD} .
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
       - docker push $REPOSITORY
+      - export DOCKER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
+      - # Deploy the docker image in ECS
+      - TASK_NAME=$IMAGE_NAME ci/scripts/update_task.sh
   - step:
-      name: Deploy to development
+      name: Push to test
       deployment: staging
+      trigger: manual
       services:
       - docker
       caches:
       - docker
       script:
-      - apt-get update && apt-get install -y python-dev jq
+      - export ENVIRONMENT="test"
+      - export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
+      - apt-get update && apt-get install -y python-dev jq bsdmainutils
       - |
         curl -O https://bootstrap.pypa.io/get-pip.py
         python get-pip.py
       - pip install awscli
-      - #export AWS_ACCESS_KEY_ID="$DEV_AWS_ACCESS_KEY_ID" && export AWS_SECRET_ACCESS_KEY="$DEV_AWS_SECRET_ACCESS_KEY"
-      - export ENVIRONMENT="dev"
+      - chmod +x ci/scripts/*
+      - # Check if any templates need to be deployed
+      - ci/scripts/deploy_templates.sh
+      - # Build, tag and push the docker image
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      - docker build -t $IMAGE_NAME:${DOCKERTAG} --build-arg ENV_DBURI=${IMAGE_NAME}_${ENVIRONMENT}_rds_DatabaseURI} --build-arg ENV_DBUSER=${TEST_DBUSER} --build-arg ENV_DBPASS=${TEST_DBPASSWORD} .
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
+      - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
+      - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
+      - docker push $REPOSITORY
       - export DOCKER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
-      - chmod +x scripts/update_task.sh
-      - TASK_NAME=$IMAGE_NAME scripts/update_task.sh
+      - # Deploy the docker image in ECS
+      - TASK_NAME=$IMAGE_NAME ci/scripts/update_task.sh
+  - step:
+      name: Push to prod
+      deployment: production
+      trigger: manual
+      services:
+      - docker
+      caches:
+      - docker
+      script:
+      - export ENVIRONMENT="prod"
+      - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$PROD_$AWS_ACCOUNT_ID
+      - apt-get update && apt-get install -y python-dev jq bsdmainutils
+      - |
+        curl -O https://bootstrap.pypa.io/get-pip.py
+        python get-pip.py
+      - pip install awscli
+      - chmod +x ci/scripts/*
+      - # Check if any templates need to be deployed
+      - ci/scripts/deploy_templates.sh
+      - # Build, tag and push the docker image
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      - docker build -t $IMAGE_NAME:${DOCKERTAG} --build-arg ENV_DBURI=${IMAGE_NAME}_${ENVIRONMENT}_rds_DatabaseURI} --build-arg ENV_DBUSER=${PROD_DBUSER} --build-arg ENV_DBPASS=${PROD_DBPASSWORD} .
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
+      - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
+      - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
+      - docker push $REPOSITORY
+      - export DOCKER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
+      - # Deploy the docker image in ECS
+      - TASK_NAME=$IMAGE_NAME ci/scripts/update_task.sh
 options:
   docker: true

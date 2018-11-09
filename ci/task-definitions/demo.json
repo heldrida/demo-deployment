@@ -1,0 +1,26 @@
+{
+    "family": "TASK_NAME",
+    "containerDefinitions": [
+        {
+            "logConfiguration": {
+                "logDriver": "sumologic",
+                "options": {
+                    "sumo-url": "SUMO_URL",
+                    "sumo-source-category": "ENVIRONMENT/SUMO_CATEGORY"
+                }
+            },
+
+            "environment": [],
+            "name": "CONTAINER_NAME",
+            "image": "DOCKER_IMAGE",
+            "cpu": 100,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "containerPort": 80
+                }
+            ],
+            "essential": true
+        }
+    ]
+}
