@@ -56,9 +56,8 @@ pipelines:
       - ci/scripts/deploy_templates.sh
       - # Build, tag and push the docker image
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      - docker build -t $IMAGE_NAME:${DOCKERTAG} --build-arg ENV_DBURI=${IMAGE_NAME}_${ENVIRONMENT}_rds_DatabaseURI} --build-arg ENV_DBUSER=${DBUSER} --build-arg ENV_DBPASS=${DBPASSWORD} .
+      - docker build -t $IMAGE_NAME:${DOCKERTAG} .
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
@@ -87,9 +86,8 @@ pipelines:
       - ci/scripts/deploy_templates.sh
       - # Build, tag and push the docker image
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      - docker build -t $IMAGE_NAME:${DOCKERTAG} --build-arg ENV_DBURI=${IMAGE_NAME}_${ENVIRONMENT}_rds_DatabaseURI} --build-arg ENV_DBUSER=${TEST_DBUSER} --build-arg ENV_DBPASS=${TEST_DBPASSWORD} .
+      - docker build -t $IMAGE_NAME:${DOCKERTAG} .
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
@@ -118,9 +116,8 @@ pipelines:
       - ci/scripts/deploy_templates.sh
       - # Build, tag and push the docker image
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      - docker build -t $IMAGE_NAME:${DOCKERTAG} --build-arg ENV_DBURI=${IMAGE_NAME}_${ENVIRONMENT}_rds_DatabaseURI} --build-arg ENV_DBUSER=${PROD_DBUSER} --build-arg ENV_DBPASS=${PROD_DBPASSWORD} .
+      - docker build -t $IMAGE_NAME:${DOCKERTAG} .
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY

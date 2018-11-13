@@ -22,6 +22,14 @@ else
   STACKENV="OTHER"
 fi
 
+set_db_configuration(){
+    set -e
+    sed -i "s/DBPASSWORD/${DBPASSWORD}/g" www/wp-conf/aws-wp-config-${ENVIRONMENT}.json
+    sed -i "s/DBUSER/${DBUSER}/g" www/wp-conf/aws-wp-config-${ENVIRONMENT}.json
+    sed -i "s/DBHOST/${stackName}_DatabaseURI/g" www/wp-conf/aws-wp-config-${ENVIRONMENT}.json
+}
+
+
 echo "Following changes found in ci/templates/"
 echo $changedTemplates
 
@@ -68,6 +76,11 @@ do
      # Replace - with _ using shell replacement (//-/_)
      echo ${exportName//-/_}=${exportValue}
      export ${exportName//-/_}=${exportValue}
-     done
 
+     # Set DB configuration with variables from exports if rds template is detected
+     if [ "$templateName" == "rds" ]; then
+       set_db_configuration
+     fi
+     done
 done
+

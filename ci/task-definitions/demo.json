@@ -6,12 +6,12 @@
                 "logDriver": "sumologic",
                 "options": {
                     "sumo-url": "SUMO_URL",
-                    "sumo-source-category": "ENVIRONMENT/SUMO_CATEGORY"
+                    "sumo-source-category": "ENVIRONMENT/TASK_NAME"
                 }
             },
 
             "environment": [],
-            "name": "CONTAINER_NAME",
+            "name": "TASK_NAME",
             "image": "DOCKER_IMAGE",
             "cpu": 100,
             "memory": 128,
