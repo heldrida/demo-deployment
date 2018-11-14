@@ -46,12 +46,9 @@ pipelines:
       script:
       - export ENVIRONMENT="dev"
       - #export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
-      - apt-get update && apt-get install -y python-dev jq bsdmainutils dnsutils
-      - |
-        curl -O https://bootstrap.pypa.io/get-pip.py
-        python get-pip.py
-      - pip install awscli
       - chmod +x ci/scripts/*
+      - # Install build pre-requirements
+      - ci/scripts/build_requirements.sh
       - # Check if any templates need to be deployed
       - ci/scripts/deploy_templates.sh
       - # Build, tag and push the docker image
@@ -76,12 +73,9 @@ pipelines:
       script:
       - export ENVIRONMENT="test"
       - export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
-      - apt-get update && apt-get install -y python-dev jq bsdmainutils dnsutils
-      - |
-        curl -O https://bootstrap.pypa.io/get-pip.py
-        python get-pip.py
-      - pip install awscli
       - chmod +x ci/scripts/*
+      - # Install build pre-requirements
+      - ci/scripts/build_requirements.sh
       - # Check if any templates need to be deployed
       - ci/scripts/deploy_templates.sh
       - # Build, tag and push the docker image
@@ -106,12 +100,9 @@ pipelines:
       script:
       - export ENVIRONMENT="prod"
       - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$PROD_$AWS_ACCOUNT_ID
-      - apt-get update && apt-get install -y python-dev jq bsdmainutils dnsutils
-      - |
-        curl -O https://bootstrap.pypa.io/get-pip.py
-        python get-pip.py
-      - pip install awscli
       - chmod +x ci/scripts/*
+      - # Install build pre-requirements
+      - ci/scripts/build_requirements.sh
       - # Check if any templates need to be deployed
       - ci/scripts/deploy_templates.sh
       - # Build, tag and push the docker image
