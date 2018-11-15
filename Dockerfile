@@ -1,9 +1,9 @@
 FROM ubuntu:12.04
 
 # Get Environment variables from envsubst
-ENV DBHOST $DBHOST
-ENV DBUSER $DBUSER
-ENV DBPASSWORD $DBPASSWORD
+ENV DBHOST=$DBHOST
+ENV DBUSER=$DBUSER
+ENV DBPASSWORD=$DBPASSWORD
 
 # Install dependencies
 RUN apt-get update -y

@@ -54,8 +54,8 @@ pipelines:
       - # Build, tag and push the docker image
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       # Use envsubst to get environment variables into the docker container
-      - cat Dockerfile | envsubst > DockerfileWithEnv
-      - docker build -t $IMAGE_NAME:${DOCKERTAG} -f DockerfileWithEnv .
+      - docker build -f <(envsubst < Dockerfile) -t $IMAGE_NAME:${DOCKERTAG} .
+      #- docker build -t $IMAGE_NAME:${DOCKERTAG} -f DockerfileWithEnv .
       - rm DockerfileWithEnv
       # Log into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
