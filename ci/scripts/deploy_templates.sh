@@ -75,12 +75,15 @@ do
      # Export each output
      # Replace - with _ using shell replacement (//-/_)
      echo ${exportName//-/_}=${exportValue}
-     export ${exportName//-/_}=${exportValue}
 
      # Set DB configuration with variables from exports if rds template is detected
      if [ "$templateName" == "rds" ]; then
-       set_db_configuration
+       exportName=DBHOST
+       export ${exportName}=${exportValue}
+     else
+       export ${exportName//-/_}=${exportValue}
      fi
+
      done
 done
 
