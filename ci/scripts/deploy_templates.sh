@@ -22,13 +22,12 @@ else
   STACKENV="OTHER"
 fi
 
-set_db_configuration(){
-    set -e
-    sed -i "s/DBPASSWORD/${DBPASSWORD}/g" www/wp-conf/aws-wp-config-${ENVIRONMENT}.json
-    sed -i "s/DBUSER/${DBUSER}/g" www/wp-conf/aws-wp-config-${ENVIRONMENT}.json
-    sed -i "s/DBHOST/${stackName}_DatabaseURI/g" www/wp-conf/aws-wp-config-${ENVIRONMENT}.json
+put_secrets_in_parameter_store(){
+  aws ssm put-paramater --name "TASK_NAME/DBNAME" --value "${DBNAME}"
+  aws ssm put-paramater --name "TASK_NAME/DBPASSWORD" --value "${DBPASSWORD}"
+  aws ssm put-paramater --name "TASK_NAME/DBHOST" --value "${DBHOST}"
+  aws ssm put-paramater --name "TASK_NAME/DBUSER" --value "${DBUSER}"
 }
-
 
 echo "Following changes found in ci/templates/"
 echo $changedTemplates
@@ -83,7 +82,8 @@ do
      else
        export ${exportName//-/_}=${exportValue}
      fi
-
+     # Put secrets in the parameter store to be used in update_task.sh
+     put_secrets_in_parameter_store
      done
 done
 

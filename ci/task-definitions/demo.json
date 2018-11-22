@@ -20,7 +20,25 @@
                     "containerPort": 80
                 }
             ],
-            "essential": true
+            "essential": true,
+          "secrets": [
+            {
+              "name": "DB_HOST",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBHOST"
+            },
+            {
+              "name": "DB_USER",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBUSER"
+            },
+            {
+              "name": "DB_PASSWORD",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBPASSWORD"
+            },
+            {
+              "name": "DB_NAME",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBNAME"
+            },
+          ]
         }
     ]
 }
