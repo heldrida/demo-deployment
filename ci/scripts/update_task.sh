@@ -12,10 +12,6 @@ make_task_def(){
     sed -i "s|SUMO_URL|${SUMO_URL}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s|SUMO_CATEGORY|${IMAGE_NAME}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
     sed -i "s|TASK_NAME|${TASK_NAME}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
-    sed -i "s|DBHOST|${DBHOST}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
-    sed -i "s|DBUSER|${DBUSER}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
-    sed -i "s|DBPASSWORD|${DBPASSWORD}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
-    sed -i "s|DBNAME|${DBNAME}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
 }
 make_task_def
 # Get ARN of ECS cluster role

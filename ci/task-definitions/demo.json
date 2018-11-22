@@ -23,20 +23,20 @@
             "essential": true,
           "secrets": [
             {
-              "name": "DB_HOST",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/IMAGE_NAME/DBHOST"
+              "name": "DBHOST",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBHOST"
             },
             {
-              "name": "DB_USER",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/IMAGE_NAME/DBUSER"
+              "name": "DBUSER",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBUSER"
             },
             {
-              "name": "DB_PASSWORD",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/IMAGE_NAME/DBPASSWORD"
+              "name": "DBPASSWORD",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBPASSWORD"
             },
             {
-              "name": "DB_NAME",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/IMAGE_NAME/DBNAME"
+              "name": "DBNAME",
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBNAME"
             }
           ]
         }
