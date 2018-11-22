@@ -17,7 +17,7 @@ make_task_def(){
 }
 make_task_def
 # Get ARN of ECS cluster role
-ecsRole=$(aws cloudformation list-exports --query "Exports[?Name==\`${ENVIRONMENT}-cluster-EcsClusterRole\`].Value" --no-paginate --output text)
+ecsRole=$(aws cloudformation list-exports --query "Exports[?Name==\`${ENVIRONMENT}-cluster-EcsContainerRole\`].Value" --no-paginate --output text)
 
 echo "Deploying from ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json"
 rev=$(aws ecs register-task-definition --execution-role-arn $ecsRole --cli-input-json file://ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json |  jq '.taskDefinition.revision')
