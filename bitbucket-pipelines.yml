@@ -34,30 +34,41 @@ pipelines:
   default:
   - step:
       name: Default
-      script:
-      - echo "Default step"
-      - chmod +x ci/scripts/*
-
-  - step:
-      name: Push to dev
-      deployment: test
       services:
       - docker
       caches:
       - docker
       script:
-      - export ENVIRONMENT="dev"
-      - #export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
-      - # Install build pre-requirements
+      - echo "Install build requirements and build the Dockerfile"
+      # Make all scripts eXecutable
+      - chmod +x ci/scripts/*
+      # Install build pre-requirements
       - ci/scripts/build_requirements.sh
-      - # Check if any templates need to be deployed
-      - ci/scripts/deploy_templates.sh
-      - # Build, tag and push the docker image
+      # Build the Docker image
+      - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - docker build -t $IMAGE_NAME:${DOCKERTAG} .
+      - docker save -o image.tar $IMAGE_NAME:$BITBUCKET_COMMIT
+      artifacts:
+      - image.tar
+
+  - step:
+      name: Push to dev
+      deployment: test
+      caches:
+      - docker
+      services:
+      - docker
+      script:
+      - export ENVIRONMENT="dev"
+      # Check if any templates need to be deployed
+      - ci/scripts/deploy_templates.sh
+      # Load the Dockerfile
+      - docker load -i image.tar
+      - #export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
       # Log into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
+      # Create the repository string and tag + push the image into it
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
       - docker push $REPOSITORY
