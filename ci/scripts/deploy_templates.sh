@@ -79,6 +79,7 @@ do
 
      # Set DB configuration with variables from exports if rds template is detected
      if [ "$templateName" == "rds" ]; then
+       # Make sure the name of the exported variable is DBHOST for the rds URI
        exportName=DBHOST
        export ${exportName}=${exportValue}
      else
