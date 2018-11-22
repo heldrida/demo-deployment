@@ -84,7 +84,7 @@ Parameters:
   RdsClientSg2:
     AllowedPattern: ^.+$
     Default: NONE
-    Description: 'Optional: Client SG to allow access to this RDS. (NONE for default)'
+    Description: 'Optional: Client SG to allow access to this RDS (NONE for default)'
     Type: String
   StackEnv:
     AllowedValues:

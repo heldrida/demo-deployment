@@ -37,7 +37,7 @@
             {
               "name": "DB_NAME",
               "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBNAME"
-            },
+            }
           ]
         }
     ]

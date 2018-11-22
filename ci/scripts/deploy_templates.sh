@@ -23,10 +23,10 @@ else
 fi
 
 put_secrets_in_parameter_store(){
-  aws ssm put-paramater --name "TASK_NAME/DBNAME" --value "${DBNAME}"
-  aws ssm put-paramater --name "TASK_NAME/DBPASSWORD" --value "${DBPASSWORD}"
-  aws ssm put-paramater --name "TASK_NAME/DBHOST" --value "${DBHOST}"
-  aws ssm put-paramater --name "TASK_NAME/DBUSER" --value "${DBUSER}"
+  aws ssm put-parameter --name "TASK_NAME/DBNAME" --value "${DBNAME}"
+  aws ssm put-parameter --name "TASK_NAME/DBPASSWORD" --value "${DBPASSWORD}"
+  aws ssm put-parameter --name "TASK_NAME/DBHOST" --value "${DBHOST}"
+  aws ssm put-parameter --name "TASK_NAME/DBUSER" --value "${DBUSER}"
 }
 
 echo "Following changes found in ci/templates/"
