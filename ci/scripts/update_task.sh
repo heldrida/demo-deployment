@@ -18,7 +18,7 @@ make_task_def(){
     sed -i "s|DBNAME|${DBNAME}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
 }
 make_task_def
-# Get ECS cluster role
+# Get ARN of ECS cluster role
 ecsRole=$(aws cloudformation list-exports --query "Exports[?Name==\`${ENVIRONMENT}-cluster-EcsClusterRole\`].Value" --no-paginate --output text)
 
 echo "Deploying from ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json"
