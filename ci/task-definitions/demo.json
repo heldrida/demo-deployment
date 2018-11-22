@@ -1,44 +1,44 @@
 {
-    "family": "TASK_NAME",
-    "containerDefinitions": [
-        {
-            "logConfiguration": {
-                "logDriver": "sumologic",
-                "options": {
-                    "sumo-url": "SUMO_URL",
-                    "sumo-source-category": "ENVIRONMENT/SUMO_CATEGORY"
-                }
-            },
-
-            "environment": [],
-            "name": "CONTAINER_NAME",
-            "image": "DOCKER_IMAGE",
-            "cpu": 100,
-            "memory": 128,
-            "portMappings": [
-                {
-                    "containerPort": 80
-                }
-            ],
-            "essential": true,
-          "secrets": [
-            {
-              "name": "DBHOST",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBHOST"
-            },
-            {
-              "name": "DBUSER",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBUSER"
-            },
-            {
-              "name": "DBPASSWORD",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBPASSWORD"
-            },
-            {
-              "name": "DBNAME",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBNAME"
-            }
-          ]
+  "family": "TASK_NAME",
+  "containerDefinitions": [
+    {
+      "logConfiguration": {
+        "logDriver": "sumologic",
+        "options": {
+          "sumo-url": "SUMO_URL",
+          "sumo-source-category": "ENVIRONMENT/SUMO_CATEGORY"
         }
-    ]
+      },
+
+      "environment": [],
+      "name": "CONTAINER_NAME",
+      "image": "DOCKER_IMAGE",
+      "cpu": 100,
+      "memory": 128,
+      "portMappings": [
+        {
+          "containerPort": 80
+        }
+      ],
+      "essential": true,
+      "secrets": [
+        {
+          "name": "DBHOST",
+          "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBHOST"
+        },
+        {
+          "name": "DBUSER",
+          "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBUSER"
+        },
+        {
+          "name": "DBPASSWORD",
+          "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBPASSWORD"
+        },
+        {
+          "name": "DBNAME",
+          "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/ENVIRONMENT-cluster/TASK_NAME/DBNAME"
+        }
+      ]
+    }
+  ]
 }
