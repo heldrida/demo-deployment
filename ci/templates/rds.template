@@ -55,7 +55,7 @@ Parameters:
     Description: DB Master Username
     Type: String
   DbName:
-    Description: DB Name
+    Description: DB Name.
     Type: String
   DbPassword:
     Description: Password
