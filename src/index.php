@@ -23,6 +23,8 @@
                         $myfile = fopen("/var/www/my-vol/date", "r") or die("");
                         echo fread($myfile,filesize("/var/www/my-vol/date"));
                         fclose($myfile);
+
+                        echo 'DBHOST is:' .$_ENV["DB_HOST"]
                 ?>
 
             </div>
