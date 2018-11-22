@@ -67,68 +67,76 @@ pipelines:
       - ci/scripts/deploy_templates.sh
       # Load the Dockerfile
       - docker load -i image.tar
-      - #export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
       # Log into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      # Create the repository string and tag + push the image into it
+      # Create the dockertag from the bitbucket build
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      # Generate the repository url
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
+      # Tag and push the Dockerfile to the repository
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
       - docker push $REPOSITORY
+      # Set DOCKER_IMAGE to be used in update_task.sh
       - export DOCKER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - # Deploy the docker image in ECS
       - TASK_NAME=$IMAGE_NAME ci/scripts/update_task.sh
   - step:
       name: Push to test
       deployment: staging
-      trigger: manual
-      services:
-      - docker
       caches:
       - docker
+      services:
+      - docker
+      trigger: manual
       script:
       - export ENVIRONMENT="test"
-      - export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
-      - chmod +x ci/scripts/*
-      - # Install build pre-requirements
+      # Install build pre-requirements
       - ci/scripts/build_requirements.sh
-      - # Check if any templates need to be deployed
+      # Check if any templates need to be deployed
       - ci/scripts/deploy_templates.sh
-      - # Build, tag and push the docker image
-      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      - docker build -t $IMAGE_NAME:${DOCKERTAG} .
+      # Load the Dockerfile
+      - docker load -i image.tar
+      - export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
+      # Log into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
+      # Create the dockertag from the bitbucket build
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      # Generate the repository url
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
+      # Tag and push the Dockerfile to the repository
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
       - docker push $REPOSITORY
+      # Set DOCKER_IMAGE to be used in update_task.sh
       - export DOCKER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - # Deploy the docker image in ECS
       - TASK_NAME=$IMAGE_NAME ci/scripts/update_task.sh
   - step:
-      name: Push to prod
+      name: Push to test
       deployment: production
-      trigger: manual
-      services:
-      - docker
       caches:
       - docker
+      services:
+      - docker
+      trigger: manual
       script:
       - export ENVIRONMENT="prod"
-      - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$PROD_$AWS_ACCOUNT_ID
-      - chmod +x ci/scripts/*
-      - # Install build pre-requirements
+      # Install build pre-requirements
       - ci/scripts/build_requirements.sh
-      - # Check if any templates need to be deployed
+      # Check if any templates need to be deployed
       - ci/scripts/deploy_templates.sh
-      - # Build, tag and push the docker image
-      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      - docker build -t $IMAGE_NAME:${DOCKERTAG} .
+      # Load the Dockerfile
+      - docker load -i image.tar
+      - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$PROD_$AWS_ACCOUNT_ID
+      # Log into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
+      # Create the dockertag from the bitbucket build
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      # Generate the repository url
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
+      # Tag and push the Dockerfile to the repository
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
       - docker push $REPOSITORY
+      # Set DOCKER_IMAGE to be used in update_task.sh
       - export DOCKER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - # Deploy the docker image in ECS
       - TASK_NAME=$IMAGE_NAME ci/scripts/update_task.sh
