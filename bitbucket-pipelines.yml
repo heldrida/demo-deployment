@@ -61,6 +61,8 @@ pipelines:
       - docker
       script:
       - export ENVIRONMENT="dev"
+      # Install build pre-requirements
+      - ci/scripts/build_requirements.sh
       # Check if any templates need to be deployed
       - ci/scripts/deploy_templates.sh
       # Load the Dockerfile
