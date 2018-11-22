@@ -46,7 +46,7 @@ pipelines:
       - ci/scripts/build_requirements.sh
       # Build the Docker image
       - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
-      - export DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - docker build -t $IMAGE_NAME:${DOCKERTAG} .
       - docker save -o image.tar $IMAGE_NAME:$DOCKERTAG
       artifacts:
@@ -71,6 +71,7 @@ pipelines:
       # Log into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       # Create the repository string and tag + push the image into it
+      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - REPOSITORY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME:$DOCKERTAG"
       - docker tag $IMAGE_NAME:$DOCKERTAG $REPOSITORY
       - docker push $REPOSITORY
