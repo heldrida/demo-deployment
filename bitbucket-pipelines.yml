@@ -46,7 +46,7 @@ pipelines:
       - ci/scripts/build_requirements.sh
       # Build the Docker image
       - echo "Currently building $IMAGE_NAME:$DOCKERTAG"
-      - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
+      - export DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
       - docker build -t $IMAGE_NAME:${DOCKERTAG} .
       - docker save -o image.tar $IMAGE_NAME:$DOCKERTAG
       artifacts:
