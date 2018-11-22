@@ -18,8 +18,11 @@ make_task_def(){
     sed -i "s|DBNAME|${DBNAME}|g" ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json
 }
 make_task_def
+# Get ECS cluster role
+ecsRole=$(aws cloudformation list-exports --query "Exports[?Name==\`${ENVIRONMENT}-cluster-EcsClusterRole\`].Value" --no-paginate --output text)
+
 echo "Deploying from ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json"
-rev=$(aws ecs register-task-definition --execution-role-arn arn:aws:iam::145601632047:role/dev-cluster-EcsClusterRole-16LL2QW9XUCYK --cli-input-json file://ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json |  jq '.taskDefinition.revision')
+rev=$(aws ecs register-task-definition --execution-role-arn $ecsRole --cli-input-json file://ci/task-definitions/$TASK_NAME-$BITBUCKET_COMMIT.json |  jq '.taskDefinition.revision')
 echo "New revision $TASK_NAME-$rev created"
 
 # Get the ARN of the taskdefinition
