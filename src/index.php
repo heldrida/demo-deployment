@@ -19,12 +19,15 @@
                 <h2>Congratulations</h2>
                 <p>Your PHP application is now running on a container in Amazon ECS.</p>
                 <p>The container is running PHP version <?php echo phpversion(); ?>.</p>
+                <p>Exported environment variables: </p>
+                <?php
+                       print_r(compact(array_keys(get_defined_vars())));
+                 ?>
+
                 <?php
                         $myfile = fopen("/var/www/my-vol/date", "r") or die("");
                         echo fread($myfile,filesize("/var/www/my-vol/date"));
                         fclose($myfile);
-
-                        echo 'DBHOST is:' .$_ENV["DB_HOST"]
                 ?>
 
             </div>

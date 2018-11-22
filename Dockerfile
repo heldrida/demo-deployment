@@ -1,10 +1,5 @@
 FROM ubuntu:12.04
 
-# Get Environment variables from envsubst
-ENV DBHOST=$DBHOST
-ENV DBUSER=$DBUSER
-ENV DBPASSWORD=$DBPASSWORD
-
 # Install dependencies
 RUN apt-get update -y
 RUN apt-get install -y git curl apache2 php5 libapache2-mod-php5 php5-mcrypt php5-mysql
