@@ -36,6 +36,8 @@ pipelines:
       name: Default
       script:
       - echo "Default step"
+      - chmod +x ci/scripts/*
+
   - step:
       name: Push to dev
       deployment: test
@@ -46,17 +48,13 @@ pipelines:
       script:
       - export ENVIRONMENT="dev"
       - #export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID && export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY && export $AWS_ACCOUNT_ID=$TEST_$AWS_ACCOUNT_ID
-      - chmod +x ci/scripts/*
       - # Install build pre-requirements
       - ci/scripts/build_requirements.sh
       - # Check if any templates need to be deployed
       - ci/scripts/deploy_templates.sh
       - # Build, tag and push the docker image
       - DOCKERTAG=$(echo $BITBUCKET_BUILD_NUMBER | sed 's/://')
-      # Use envsubst to get environment variables into the docker container
-      - docker build -f <(envsubst < Dockerfile) -t $IMAGE_NAME:${DOCKERTAG} .
-      #- docker build -t $IMAGE_NAME:${DOCKERTAG} -f DockerfileWithEnv .
-      - rm DockerfileWithEnv
+      - docker build -t $IMAGE_NAME:${DOCKERTAG} .
       # Log into ECR
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo "Currently building $IMAGE_NAME:$DOCKERTAG"

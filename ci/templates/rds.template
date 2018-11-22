@@ -51,8 +51,11 @@ Parameters:
     Type: String
   DbMasterUser:
     AllowedPattern: ^.+$
-    Default: admin
+    Default: NONE
     Description: DB Master Username
+    Type: String
+  DbName:
+    Description: DB Name
     Type: String
   DbPassword:
     Description: Password
@@ -92,7 +95,7 @@ Parameters:
     Description: Environment type (PROD/UAT/OTHER)
     Type: String
 Resources:
-  9ad5857b0665405d990d08acc6a8b5c1:
+  1bb27ac7c3be4ca48494202bc1c72065:
     Type: AWS::CloudFormation::WaitConditionHandle
   DatadogRdsCpuUtilizationAlert:
     Condition: IsProd
@@ -206,6 +209,7 @@ Resources:
         - IsProd
         - db.m4.large
         - db.t2.medium
+      DBName: !Ref 'DbName'
       DBParameterGroupName: !Ref 'RDSParamGroup'
       DBSnapshotIdentifier: !If
         - RestoreSnapshot

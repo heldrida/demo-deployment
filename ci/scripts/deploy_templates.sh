@@ -55,7 +55,8 @@ do
   DatadogStack="cfn-datadog" \
   NetworkStack="aws-gotamedia-${ENVIRONMENT}-vpc" \
   StackEnv=$STACKENV \
-  DbPassword=$DBPASSWORD
+  DbPassword=$DBPASSWORD \
+  DbName=$DBNAME
 
   # Deployment summary
   ci/scripts/aws-cloudformation-stack-status.sh --region $AWS_DEFAULT_REGION --stack-name $stackName
