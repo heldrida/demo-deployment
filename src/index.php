@@ -21,9 +21,12 @@
                 <p>The container is running PHP version <?php echo phpversion(); ?>.</p>
                 <p>Exported environment variables: </p>
                 <?php
-                        print '<pre>' . htmlspecialchars(print_r(get_defined_vars(), true)) . '</pre>';
-                        print '<pre>' . htmlspecialchars(print_r($_SERVER, true)) . '</pre>';
-                 ?>
+
+                // Show all information, defaults to INFO_ALL
+                phpinfo();
+
+                ?>
+
 
                 <?php
                         $myfile = fopen("/var/www/my-vol/date", "r") or die("");
