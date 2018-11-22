@@ -23,10 +23,10 @@ else
 fi
 
 put_secrets_in_parameter_store(){
-  aws ssm put-parameter --type "String" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBNAME" --value "${DBNAME}"
-  aws ssm put-parameter --type "SecureString" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBPASSWORD" --value "${DBPASSWORD}"
-  aws ssm put-parameter --type "String" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBHOST" --value "${DBHOST}"
-  aws ssm put-parameter --type "String" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBUSER" --value "${DBUSER}"
+  aws ssm put-parameter --overwrite --type "String" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBNAME" --value "${DBNAME}"
+  aws ssm put-parameter --overwrite --type "SecureString" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBPASSWORD" --value "${DBPASSWORD}"
+  aws ssm put-parameter --overwrite --type "String" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBHOST" --value "${DBHOST}"
+  aws ssm put-parameter --overwrite --type "String" --name "/${ENVIRONMENT}-cluster/${IMAGE_NAME}/DBUSER" --value "${DBUSER}"
 }
 
 echo "Following changes found in ci/templates/"
