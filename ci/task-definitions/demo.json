@@ -24,19 +24,19 @@
           "secrets": [
             {
               "name": "DB_HOST",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBHOST"
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/IMAGE_NAME/DBHOST"
             },
             {
               "name": "DB_USER",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBUSER"
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/IMAGE_NAME/DBUSER"
             },
             {
               "name": "DB_PASSWORD",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBPASSWORD"
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/IMAGE_NAME/DBPASSWORD"
             },
             {
               "name": "DB_NAME",
-              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/TASK_NAME/DBNAME"
+              "valueFrom": "arn:aws:ssm:AWS_DEFAULT_REGION:AWS_ACCOUNT_ID:parameter/IMAGE_NAME/DBNAME"
             }
           ]
         }
