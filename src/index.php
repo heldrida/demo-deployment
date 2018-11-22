@@ -21,7 +21,8 @@
                 <p>The container is running PHP version <?php echo phpversion(); ?>.</p>
                 <p>Exported environment variables: </p>
                 <?php
-                       print_r(compact(array_keys(get_defined_vars())));
+                        print '<pre>' . htmlspecialchars(print_r(get_defined_vars(), true)) . '</pre>';
+                        print '<pre>' . htmlspecialchars(print_r($_SERVER, true)) . '</pre>';
                  ?>
 
                 <?php

@@ -123,4 +123,4 @@ fi
 
 # Test the load balancer
 # curl --resolve gota.media:80:$(dig +short dev-a-AlbPu-1D3WYW6CZSFVK-761301439.eu-west-1.elb.amazonaws.com | head -1) http://gota.media
-load_balancer_test
+#load_balancer_test
